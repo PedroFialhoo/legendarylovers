@@ -1,0 +1,1067 @@
+/* ================================================================
+   LEGENDARY LOVERS — STYLESHEET
+   Índice:
+   1. Reset & base
+   2. Tokens (cores, tipografia, espaçamento, sombras)
+   3. Background (gradiente + brilhos)
+   4. Layout utilitário
+   5. Header / navegação
+   6. Botões
+   7. Hero
+   8. Cards genéricos
+   9. Seção "Como funciona"
+   10. Seção "Modelos disponíveis"
+   11. Seção "Criamos do seu jeito"
+   12. Seção "Benefícios"
+   13. CTA final
+   14. Footer
+   15. Animações (entrada + scroll reveal)
+   16. Responsividade
+================================================================= */
+
+
+/* ----------------------------------------------------------------
+   1. RESET & BASE
+----------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg-deep);
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+/* Foco visível para acessibilidade (navegação por teclado) */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-pink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Respeita usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   2. TOKENS
+----------------------------------------------------------------- */
+:root {
+  /* Cores — degradê escuro em roxo (identidade Legendary Lovers) */
+  --color-bg-deep:   #12001f;
+  --color-bg-mid:    #2a0b45;
+  --color-bg-accent: #47126b;
+
+  --color-pink:        #ff4d8d;
+  --color-red:         #ff3d5e;
+  --color-purple:      #9b4dff;
+  --color-purple-soft: #c084fc;
+
+  --color-text:       #f6eefc;
+  --color-text-muted: #c9b8dd;
+  --color-text-faint: #9d87b8;
+
+  --color-glass:        rgba(255, 255, 255, 0.045);
+  --color-glass-border: rgba(255, 255, 255, 0.09);
+  --color-glass-strong: rgba(255, 255, 255, 0.07);
+
+  /* Tipografia */
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+
+  /* Espaçamento em escala */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --space-2xl: 8rem;
+
+  /* Raios */
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
+
+  /* Sombras */
+  --shadow-soft: 0 20px 50px rgba(6, 0, 15, 0.45);
+  --shadow-glow-pink: 0 0 60px rgba(255, 77, 141, 0.25);
+  --shadow-glow-purple: 0 0 60px rgba(155, 77, 255, 0.22);
+
+  /* Transições */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.25s var(--ease-out);
+  --transition-medium: 0.45s var(--ease-out);
+}
+
+
+/* ----------------------------------------------------------------
+   3. BACKGROUND — gradiente escuro + brilhos desfocados
+----------------------------------------------------------------- */
+body {
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -10%, var(--color-bg-accent) 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-bg-deep) 0%, var(--color-bg-mid) 45%, var(--color-bg-deep) 100%);
+}
+
+.bg-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.55;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-glow--one {
+  width: 42vw;
+  height: 42vw;
+  top: -10vw;
+  left: -8vw;
+  background: var(--color-pink);
+  animation: float-slow 18s ease-in-out infinite;
+}
+
+.bg-glow--two {
+  width: 38vw;
+  height: 38vw;
+  top: 30vh;
+  right: -12vw;
+  background: var(--color-purple);
+  animation: float-slow 22s ease-in-out infinite reverse;
+}
+
+.bg-glow--three {
+  width: 34vw;
+  height: 34vw;
+  bottom: -12vw;
+  left: 20vw;
+  background: var(--color-red);
+  opacity: 0.28;
+  animation: float-slow 26s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(3vw, 4vh) scale(1.08); }
+}
+
+/* Textura sutil de ruído para tirar a planura do gradiente */
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+
+/* ----------------------------------------------------------------
+   4. LAYOUT UTILITÁRIO
+----------------------------------------------------------------- */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.section {
+  position: relative;
+  padding-block: 4rem;
+}
+
+.section-heading {
+  text-align: center;
+  max-width: 640px;
+  margin-inline: auto;
+  margin-bottom: var(--space-xl);
+}
+
+.section-heading h2 {
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  margin-top: var(--space-xs);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-purple-soft);
+}
+
+.eyebrow--center {
+  display: flex;
+  justify-content: center;
+}
+
+.eyebrow__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-pink), var(--color-purple));
+  box-shadow: 0 0 12px var(--color-pink);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-pink) 10%, var(--color-red) 45%, var(--color-purple) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+/* ----------------------------------------------------------------
+   5. HEADER / NAVEGAÇÃO
+----------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: rgba(18, 0, 31, 0.55);
+  border-bottom: 1px solid var(--color-glass-border);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: 1.1rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  transition: opacity var(--transition-fast);
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.logo__mark {
+  display: inline-flex;
+}
+
+.logo__mark {
+  fill: none;
+  height: 28px;
+  width: 28px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.nav a {
+  position: relative;
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--color-pink), var(--color-purple));
+  transition: width var(--transition-fast);
+}
+
+.nav a:hover {
+  color: var(--color-text);
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+.nav__cta {
+  display: none; /* aparece a partir de tablet grande / desktop */
+}
+
+
+/* ----------------------------------------------------------------
+   6. BOTÕES
+----------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.7rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn--primary {
+  color: #1a0028;
+  background: linear-gradient(120deg, var(--color-pink), var(--color-red) 60%, var(--color-purple));
+  box-shadow: var(--shadow-glow-pink), var(--shadow-soft);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 80px rgba(255, 77, 141, 0.4), var(--shadow-soft);
+}
+
+.btn--ghost {
+  color: var(--color-text);
+  background: var(--color-glass);
+  border-color: var(--color-glass-border);
+  backdrop-filter: blur(12px);
+}
+
+.btn--ghost:hover {
+  background: var(--color-glass-strong);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+.btn--outline {
+  color: var(--color-text);
+  background: transparent;
+  border-color: var(--color-glass-border);
+}
+
+.btn--outline:hover {
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+  transform: translateY(-2px);
+}
+
+.btn--small {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+}
+
+.btn--large {
+  padding: 1.1rem 2.4rem;
+  font-size: 1.05rem;
+}
+
+
+/* ----------------------------------------------------------------
+   7. HERO
+----------------------------------------------------------------- */
+.hero {
+  padding-block: clamp(4rem, 12vw, 7rem) var(--space-xl);
+  text-align: center;
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 780px;
+}
+
+.hero__title {
+  font-size: clamp(2.3rem, 6vw, 4rem);
+  line-height: 1.12;
+  margin-top: var(--space-md);
+}
+
+.hero__subtitle {
+  margin-top: var(--space-sm);
+  max-width: 560px;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--color-text-muted);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: var(--space-lg);
+}
+
+/* Elemento assinatura: dois brilhos se fundindo em modo de mesclagem,
+   simbolizando duas histórias que se tornam uma só */
+.hero__signature {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 160px;
+  margin-top: var(--space-2xl);
+  mix-blend-mode: screen;
+}
+
+.signature-orb {
+  position: absolute;
+  top: 50%;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  filter: blur(40px);
+  transform: translateY(-50%);
+  animation: orb-pulse 7s ease-in-out infinite;
+}
+
+.signature-orb--pink {
+  left: 30%;
+  background: radial-gradient(circle, var(--color-pink) 0%, transparent 70%);
+}
+
+.signature-orb--purple {
+  right: 30%;
+  background: radial-gradient(circle, var(--color-purple) 0%, transparent 70%);
+  animation-delay: -3.5s;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { opacity: 0.55; transform: translateY(-50%) scale(1); }
+  50%      { opacity: 0.9;  transform: translateY(-50%) scale(1.15); }
+}
+
+
+/* ----------------------------------------------------------------
+   8. CARDS GENÉRICOS (glassmorphism)
+----------------------------------------------------------------- */
+.card-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.card-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card-grid--models {
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium), background var(--transition-medium);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-soft), var(--shadow-glow-purple);
+  background: var(--color-glass-strong);
+}
+
+/* -- cards de "Como funciona" -- */
+.card--feature {
+  padding: var(--space-lg) var(--space-md);
+}
+
+.card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-sm);
+  color: var(--color-pink);
+  background: linear-gradient(135deg, rgba(255, 77, 141, 0.16), rgba(155, 77, 255, 0.16));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.card--feature h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+
+.card--feature p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* -- cards de benefícios -- */
+.card--benefit {
+  padding: var(--space-lg) var(--space-sm);
+  text-align: center;
+}
+
+.card__emoji {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: var(--space-sm);
+}
+
+.card--benefit h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+
+/* ----------------------------------------------------------------
+   9. SEÇÃO "COMO FUNCIONA" — específico
+----------------------------------------------------------------- */
+/* (estrutura de cards já coberta acima em .card--feature) */
+
+
+/* ----------------------------------------------------------------
+   10. SEÇÃO "MODELOS DISPONÍVEIS"
+----------------------------------------------------------------- */
+.model-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
+}
+
+.model-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-soft), var(--shadow-glow-pink);
+}
+
+.model-card__preview {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  position: relative;
+}
+
+.model-card__preview--spotify {
+  background: linear-gradient(160deg, #1a2e22 0%, #10231a 100%);
+}
+
+.model-card__preview--netflix {
+  background: linear-gradient(160deg, #2b0d10 0%, #17070a 100%);
+}
+
+.model-card__preview--soon {
+  background: linear-gradient(160deg, rgba(155, 77, 255, 0.18), rgba(255, 77, 141, 0.1));
+}
+
+.model-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: var(--space-md);
+}
+
+.model-card__body h3 {
+  font-size: 1.3rem;
+}
+
+.model-card__body p {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+}
+
+.tag {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+}
+
+.tag--spotify {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.12);
+}
+
+.tag--netflix {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+}
+
+.tag--soon {
+  color: var(--color-purple-soft);
+  background: rgba(155, 77, 255, 0.14);
+}
+
+/* Mock do player estilo Spotify (ilustrativo, sem imagens reais) */
+.mock-player {
+  width: 100%;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.mock-player__art {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-pink), var(--color-purple));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.mock-player__lines {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mock-line {
+  display: block;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.mock-line--title { width: 60%; }
+.mock-line--subtitle { width: 40%; background: rgba(255, 255, 255, 0.1); }
+
+.mock-player__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 26px;
+}
+
+.mock-player__bars span {
+  width: 4px;
+  border-radius: 2px;
+  background: #4ade80;
+  animation: bar-bounce 1.6s ease-in-out infinite;
+}
+
+.mock-player__bars span:nth-child(1) { height: 40%; animation-delay: 0s; }
+.mock-player__bars span:nth-child(2) { height: 80%; animation-delay: .2s; }
+.mock-player__bars span:nth-child(3) { height: 55%; animation-delay: .4s; }
+.mock-player__bars span:nth-child(4) { height: 95%; animation-delay: .1s; }
+.mock-player__bars span:nth-child(5) { height: 65%; animation-delay: .3s; }
+
+@keyframes bar-bounce {
+  0%, 100% { transform: scaleY(0.5); }
+  50%      { transform: scaleY(1); }
+}
+
+/* Mock estilo Netflix */
+.mock-netflix {
+  width: 100%;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.mock-netflix__badge {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #f87171;
+}
+
+.mock-netflix__row {
+  display: flex;
+  gap: 8px;
+}
+
+.mock-netflix__row span {
+  flex: 1;
+  height: 46px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, rgba(248, 113, 113, 0.35), rgba(255, 255, 255, 0.06));
+}
+
+/* Ícone "em breve" */
+.soon-icon {
+  display: inline-flex;
+  color: var(--color-purple-soft);
+  animation: spin-slow 6s linear infinite;
+}
+
+.soon-icon svg {
+  width: 54px;
+  height: 54px;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
+/* ----------------------------------------------------------------
+   11. SEÇÃO "CRIAMOS DO SEU JEITO"
+----------------------------------------------------------------- */
+.custom-section__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.custom-section__text h2 {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  margin: 0.5rem 0 var(--space-sm);
+}
+
+.custom-section__lead {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  margin-bottom: var(--space-md);
+  max-width: 460px;
+}
+
+.custom-section__illustration svg {
+  width: 100%;
+  max-width: 340px;
+  margin-inline: auto;
+}
+
+.illu-frame {
+  fill: var(--color-glass);
+  stroke: var(--color-glass-border);
+  stroke-width: 2;
+}
+
+.illu-line--a {
+  fill: var(--color-purple-soft);
+  opacity: 0.9;
+}
+
+.illu-line--b {
+  fill: rgba(255, 255, 255, 0.14);
+}
+
+.illu-circle {
+  fill: none;
+  stroke: var(--color-purple-soft);
+  stroke-width: 3;
+  stroke-dasharray: 6 8;
+  animation: spin-slow 14s linear infinite;
+  transform-origin: 90px 170px;
+}
+
+.illu-cta {
+  fill: rgba(255, 77, 141, 0.14);
+  stroke: var(--color-pink);
+  stroke-width: 1.5;
+}
+
+.illu-heart {
+  fill: none;
+  stroke: var(--color-pink);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+
+/* ----------------------------------------------------------------
+   12. SEÇÃO "BENEFÍCIOS"
+----------------------------------------------------------------- */
+/* (estrutura de cards já coberta em .card--benefit) */
+
+
+/* ----------------------------------------------------------------
+   13. CTA FINAL
+----------------------------------------------------------------- */
+.cta {
+  text-align: center; 
+  margin: 10px
+}
+
+.cta__inner {
+  max-width: 720px;
+  padding: var(--space-2xl) var(--space-lg);
+  background: linear-gradient(135deg, rgba(255, 77, 141, 0.1), rgba(155, 77, 255, 0.12));
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-soft);
+}
+
+.cta__inner h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  margin-bottom: var(--space-lg);
+}
+
+
+/* ----------------------------------------------------------------
+   14. FOOTER
+----------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--color-glass-border);
+  padding-block: var(--space-xl) var(--space-lg);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-sm);
+}
+
+.site-footer__tagline {
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+  max-width: 360px;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-xs);
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-glass-border);
+  background: var(--color-glass);
+  font-size: 0.88rem;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.social-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+}
+
+.site-footer__copy {
+  margin-top: var(--space-lg);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-text-faint);
+}
+
+
+/* ----------------------------------------------------------------
+   15. ANIMAÇÕES — entrada da página + revelação ao rolar
+----------------------------------------------------------------- */
+
+/* Entrada suave dos elementos do hero ao carregar a página */
+.hero .reveal {
+  animation: fade-up 0.9s var(--ease-out) both;
+}
+
+.hero .eyebrow.reveal      { animation-delay: 0.05s; }
+.hero__title.reveal        { animation-delay: 0.15s; }
+.hero__subtitle.reveal     { animation-delay: 0.25s; }
+.hero__actions.reveal      { animation-delay: 0.35s; }
+.hero__signature.reveal    { animation-delay: 0.45s; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Revelação discreta ao rolar a página, sem JavaScript,
+   usando "scroll-driven animations" nativas do CSS.
+   Navegadores sem suporte simplesmente mostram o conteúdo já visível. */
+@supports (animation-timeline: view()) {
+  main .reveal {
+    opacity: 0;
+    animation: fade-up 0.8s var(--ease-out) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+
+
+/* ----------------------------------------------------------------
+   16. RESPONSIVIDADE
+----------------------------------------------------------------- */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .nav__cta {
+    display: none;
+  }
+
+  .card-grid--3,
+  .card-grid--4,
+  .card-grid--models {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .custom-section__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .custom-section__text {
+    order: 1;
+  }
+
+  .custom-section__illustration {
+    order: 2;
+  }
+
+  .custom-section__lead {
+    margin-inline: auto;
+  }
+}
+
+/* Nav enxuta em telas médias */
+@media (max-width: 760px) {
+  .nav {
+    gap: var(--space-md);
+  }
+
+  .nav a:nth-child(3),
+  .nav a:nth-child(4) {
+    display: none;
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .container {
+    padding-inline: var(--space-sm);
+  }
+
+  .section {
+    padding-block: var(--space-xl);
+  }
+
+  .site-header__inner {
+    padding-block: 0.9rem;
+  }
+
+  .logo__text {
+    font-size: 0.95rem;
+  }
+
+  .nav {
+    gap: var(--space-sm);
+  }
+
+  .nav a {
+    font-size: 0.8rem;
+  }
+
+  .hero {
+    padding-block: 3rem var(--space-lg);
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+  }
+
+  .hero__signature {
+    height: 120px;
+    margin-top: var(--space-xl);
+  }
+
+  .card-grid--3,
+  .card-grid--4,
+  .card-grid--models {
+    grid-template-columns: 1fr;
+  }
+
+  .cta__inner {
+    padding: var(--space-xl) var(--space-md);
+  }
+}
+
+/* Telas grandes: reforça respiro geral */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1280px;
+  }
+}
